@@ -7,5 +7,36 @@
     <link rel="stylesheet" href="style.css" />
     <script src="script.js"></script>
   </head>
-  <body></body>
+  <body>
+    <div id="content">
+      <header>
+        <h1>Odin Project: Weather App</h1>
+        <form id="weatherForm">
+          <input
+            type="text"
+            id="cityInput"
+            placeholder="Enter city name"
+            required
+          />
+          <button type="submit">Get Weather</button>
+        </form>
+      </header>
+
+      <main>
+        <div id="weatherContainer">
+          <div id="weatherDisplay">
+            <h2 id="cityName"></h2>
+            <p id="weatherDescription"></p>
+            <p id="temperature"></p>
+            <p id="humidity"></p>
+            <p id="windSpeed"></p>
+          </div>
+        </div>
+      </main>
+
+      <footer>
+        <p>Powered by Visual Crossing API and IP Geolocation API</p>
+      </footer>
+    </div>
+  </body>
 </html>
