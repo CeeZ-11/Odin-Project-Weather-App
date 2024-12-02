@@ -96,3 +96,13 @@ input {
   gap: 10px;
   justify-content: start;
 }
+
+#weatherSvg {
+  width: 100px;
+  height: 100px;
+}
+
+#container-svg {
+  display: flex;
+  justify-content: center;
+}
