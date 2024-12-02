@@ -1,4 +1,4 @@
-const getLocation = async () => {
+const getCurrentLocation = async () => {
   const apiKey = "159234c99fb545ada50544206108bb6b";
   const url = `https://api.ipgeolocation.io/ipgeo?apiKey=${apiKey}`;
 
@@ -7,12 +7,12 @@ const getLocation = async () => {
       mode: "cors",
     });
     const data = await response.json();
-    console.log(data);
 
+    const cityName = data.city;
     const latitude = data.latitude;
     const longitude = data.longitude;
 
-    return { latitude, longitude };
+    return { cityName, latitude, longitude };
   } catch (e) {
     console.log(e);
   }
@@ -27,31 +27,41 @@ const getWeatherData = async (latitude, longitude) => {
       mode: "cors",
     });
     const data = await response.json();
-    console.log(data);
+
     return data;
   } catch (e) {
     console.log(e);
   }
 };
 
-const displayWeather = async () => {
-  const location = await getLocation();
+const displayCurrentLocationWeather = async () => {
+  const currentLoc = await getCurrentLocation();
+  const { cityName, latitude, longitude } = currentLoc;
+  const data = await getWeatherData(latitude, longitude);
+  const cityData = JSON.stringify(data);
 
   try {
-    if (location) {
-      const { latitude, longitude } = location;
-      const data = await getWeatherData(latitude, longitude);
-
-      console.log(
-        "Weather data displayed successfully!" + JSON.stringify(data)
-      );
+    if (cityData) {
+      console.log("Current Location City Name: " + cityName);
     }
   } catch (e) {
     console.log(e);
   }
 };
 
-//displayWeather();
+const displayWeather = async (inputData) => {
+  const data = await getWeatherData(inputData.lat, inputData.lng);
+  const cityData = JSON.stringify(data);
+
+  try {
+    if (cityData) {
+      console.log("Input Location City Name: " + inputData.name);
+      console.log("City Data: " + cityData);
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 const validateQuery = async () => {
   const query = document.querySelector("#cityInput");
@@ -70,6 +80,10 @@ const validateQuery = async () => {
       if (data.geonames && data.geonames.length > 0) {
         console.log("Valid city: ", data.geonames[0].name);
         alert(`${city} is a valid city.`);
+
+        const inputData = data.geonames[0];
+
+        displayWeather(inputData);
       } else {
         console.log("Invalid city.");
         alert(`${city} is not a valid city. Please try again.`);
@@ -86,3 +100,7 @@ button.addEventListener("click", async (e) => {
   e.preventDefault();
   validateQuery();
 });
+
+window.onload = async () => {
+  await displayCurrentLocationWeather();
+};
