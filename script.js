@@ -51,4 +51,38 @@ const displayWeather = async () => {
   }
 };
 
-displayWeather();
+//displayWeather();
+
+const validateQuery = async () => {
+  const query = document.querySelector("#cityInput");
+  const city = query.value.trim();
+  const username = "ceez11";
+  const url = `http://api.geonames.org/searchJSON?name_startsWith=${city}&maxRows=10&cities=cities15000&username=${username}`;
+
+  try {
+    if (city) {
+      const response = await fetch(url, {
+        mode: "cors",
+      });
+      console.log(response);
+      const data = await response.json();
+
+      if (data.geonames && data.geonames.length > 0) {
+        console.log("Valid city: ", data.geonames[0].name);
+        alert(`${city} is a valid city.`);
+      } else {
+        console.log("Invalid city.");
+        alert(`${city} is not a valid city. Please try again.`);
+      }
+      query.value = "";
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const button = document.querySelector("#submit");
+button.addEventListener("click", async (e) => {
+  e.preventDefault();
+  validateQuery();
+});
