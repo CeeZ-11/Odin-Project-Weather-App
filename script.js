@@ -94,7 +94,8 @@ const validateQuery = async () => {
   const query = document.querySelector("#cityInput");
   const city = query.value.trim();
   const username = "ceez11";
-  const url = `http://api.geonames.org/searchJSON?name_startsWith=${city}&maxRows=10&cities=cities15000&username=${username}`;
+  const proxy = "https://cors-anywhere.herokuapp.com/";
+  const url = `${proxy}http://api.geonames.org/searchJSON?name_startsWith=${city}&maxRows=10&cities=cities15000&username=${username}`;
 
   try {
     if (city) {
