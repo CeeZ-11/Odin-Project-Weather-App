@@ -43,6 +43,7 @@ const displayCurrentLocationWeather = async () => {
   try {
     if (cityData) {
       console.log("Current Location City Name: " + cityName);
+      displayData(cityName, data);
     }
   } catch (e) {
     console.log(e);
@@ -57,7 +58,33 @@ const displayWeather = async (inputData) => {
     if (cityData) {
       console.log("Input Location City Name: " + inputData.name);
       console.log("City Data: " + cityData);
+      displayData(inputData.name, data);
     }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const displayData = (name, data) => {
+  const cityName = document.querySelector("#cityName");
+  const weatherDescription = document.querySelector("#weatherDescription");
+  const temperature = document.querySelector("#temperature");
+  const humidity = document.querySelector("#humidity");
+  const windSpeed = document.querySelector("#windSpeed");
+
+  try {
+    const weather = data.days[0];
+
+    cityName.textContent = name;
+    weatherDescription.textContent = weather.description;
+    temperature.textContent = `${weather.temp}°C`;
+    humidity.textContent = `${weather.humidity}%`;
+    windSpeed.textContent = `${weather.windspeed} km/h`;
+
+    console.log(`Weather Description: ${weather.description}`);
+    console.log(`Temperature: ${weather.temp}°C`);
+    console.log(`Humidity: ${weather.humidity}%`);
+    console.log(`Wind Speed: ${weather.windspeed} km/h`);
   } catch (e) {
     console.log(e);
   }
