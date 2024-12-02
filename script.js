@@ -50,15 +50,16 @@ const displayCurrentLocationWeather = async () => {
   }
 };
 
-const displayWeather = async (inputData) => {
-  const data = await getWeatherData(inputData.lat, inputData.lng);
+const displayWeather = async (cityInfo) => {
+  const { lat, lng } = cityInfo.geometry;
+  const data = await getWeatherData(lat, lng);
   const cityData = JSON.stringify(data);
 
   try {
     if (cityData) {
-      console.log("Input Location City Name: " + inputData.name);
+      console.log("Input Location City Name: " + cityInfo.formatted);
       console.log("City Data: " + cityData);
-      displayData(inputData.name, data);
+      displayData(cityInfo.formatted, data);
     }
   } catch (e) {
     console.log(e);
@@ -93,9 +94,8 @@ const displayData = (name, data) => {
 const validateQuery = async () => {
   const query = document.querySelector("#cityInput");
   const city = query.value.trim();
-  const username = "ceez11";
-  const proxy = "https://cors-anywhere.herokuapp.com/";
-  const url = `${proxy}http://api.geonames.org/searchJSON?name_startsWith=${city}&maxRows=10&cities=cities15000&username=${username}`;
+  const apiKey = "c2f3f4bf9ac14384be48b7a08c0ac607";
+  const url = `https://api.opencagedata.com/geocode/v1/json?q=${city}&key=${apiKey}`;
 
   try {
     if (city) {
@@ -105,13 +105,12 @@ const validateQuery = async () => {
       console.log(response);
       const data = await response.json();
 
-      if (data.geonames && data.geonames.length > 0) {
-        console.log("Valid city: ", data.geonames[0].name);
-        alert(`${city} is a valid city.`);
+      if (data.results && data.results.length > 0) {
+        const cityInfo = data.results[0];
+        console.log("Valid city:", cityInfo.formatted);
+        alert(`${city} is a valid city: ${cityInfo.formatted}`);
 
-        const inputData = data.geonames[0];
-
-        displayWeather(inputData);
+        displayWeather(cityInfo);
       } else {
         console.log("Invalid city.");
         alert(`${city} is not a valid city. Please try again.`);
