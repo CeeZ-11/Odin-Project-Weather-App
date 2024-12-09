@@ -76,6 +76,8 @@ const displayData = (name, data) => {
   try {
     const weather = data.days[0];
 
+    console.log("weather : " + JSON.stringify(weather));
+
     cityName.textContent = name;
     weatherDescription.textContent = weather.description;
     temperature.textContent = `${weather.temp}°C`;
