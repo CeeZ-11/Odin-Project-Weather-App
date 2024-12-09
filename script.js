@@ -78,12 +78,14 @@ const displayData = (name, data) => {
 
     console.log("weather : " + JSON.stringify(weather));
 
+    const iconWeather = weather.icon;
     cityName.textContent = name;
     weatherDescription.textContent = weather.description;
     temperature.textContent = `${weather.temp}°C`;
     humidity.textContent = `${weather.humidity}%`;
     windSpeed.textContent = `${weather.windspeed} km/h`;
 
+    getWeatherIconMessage(iconWeather);
     console.log(`Weather Description: ${weather.description}`);
     console.log(`Temperature: ${weather.temp}°C`);
     console.log(`Humidity: ${weather.humidity}%`);
@@ -133,3 +135,37 @@ button.addEventListener("click", async (e) => {
 window.onload = async () => {
   await displayCurrentLocationWeather();
 };
+
+function getWeatherIconMessage(condition) {
+  let message = document.querySelector("#weatherMessage");
+
+  switch (condition.toLowerCase()) {
+    case "snow":
+      message.src = "./img/snow.png";
+      break;
+    case "rain":
+      message.src = "./img/rain.png";
+      break;
+    case "fog":
+      message.src = "./img/fog.png";
+      break;
+    case "wind":
+      message.src = "./img/wind.png";
+      break;
+    case "partly-cloudy-day":
+      message.src = "./img/partly-cloudy-day.png";
+      break;
+    case "partly-cloudy-night":
+      message.src = "./img/partly-cloudy-night.png";
+      break;
+    case "clear-day":
+      message.src = "./img/clear-day.png";
+      break;
+    case "clear-night":
+      message.src = "./img/clear-night.png";
+      break;
+    default:
+      message.src = "./img/weather-missing.png";
+      break;
+  }
+}
